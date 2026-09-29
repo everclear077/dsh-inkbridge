@@ -1,0 +1,23 @@
+---
+description: Inkbridge project rules — always apply
+alwaysApply: true
+---
+
+# Inkbridge (dsh-inkbridge)
+
+DSH plugin that bridges to the official `codex app-server` to generate images with the user's ChatGPT subscription.
+
+Before editing, read `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/CODING_STANDARDS.md`. Cite rule numbers (§x.y) in explanations.
+
+Hard rules:
+- Never read Codex auth files or call OpenAI/ChatGPT endpoints directly. Codex owns auth and billing.
+- Never `shell: true`; never spawn `.cmd/.ps1` on Windows. Only `src/platform/process.ts` imports `node:child_process`.
+- Layering: host → codex → platform; everyone may use shared; client uses shared only.
+- `src/codex/**` and `src/platform/**` must not import `@deepseek-ai/*`. `src/client/**` must not import `node:*`.
+- Host ↔ Client wire shapes live only in `src/shared/index.ts`; change both ends in the same commit.
+- Throw only `InkbridgeError(code, message)`. Messages tell the model what the user must do.
+- Every side effect is registered via `ctx.effect(() => dispose, 'inkbridge: …')`.
+- Routes only via `ctx.connection.fetch.register` at `/api/inkbridge.*`.
+- No `any`, no `!`. `import type` for types. Relative imports end in `.js`.
+- Done = `pnpm typecheck && pnpm test && pnpm lint && pnpm build` all green + tests for new logic + docs updated + `TODO(Mx)` removed.
+- Anything that spends real ChatGPT quota (`pnpm probe -- --generate`, live tests) needs explicit user approval.

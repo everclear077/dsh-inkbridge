@@ -1,0 +1,17 @@
+# Inkbridge bundle layer: inserted after the profile's base bundles.
+# Users override any field from their profile cordis.patch.yml by entry id.
+- insert:
+    - id: inkbridge
+      name: 'dsh-inkbridge'
+      config:
+        # shared  = reuse the user's ~/.codex login (same account as the Codex CLI)
+        # isolated = private CODEX_HOME under $DSH_HOME/inkbridge/codex-home
+        codexHome: shared
+        # Absolute path to a codex binary; empty = auto-discover (see src/codex/locate.ts)
+        codexPath: ''
+        reasoningEffort: low
+        maxConcurrent: 2
+        turnTimeoutMs: 600000
+        idleShutdownMs: 900000
+        saveToWorkspace: false
+        workspaceDir: inkbridge

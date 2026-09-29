@@ -1,0 +1,112 @@
+{
+  "name": "dsh-inkbridge",
+  "version": "0.0.1",
+  "description": "Inkbridge (墨桥) — generate images in DeepSeek Harness with your own ChatGPT subscription, by bridging to the official Codex app-server. No API key, no token scraping.",
+  "type": "module",
+  "license": "MIT",
+  "author": "everclear",
+  "homepage": "https://github.com/everclear077/dsh-inkbridge#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/everclear077/dsh-inkbridge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/everclear077/dsh-inkbridge/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "codex",
+    "chatgpt-subscription",
+    "image-generation",
+    "inkbridge"
+  ],
+  "icon": "./icon.svg",
+  "main": "lib/index.js",
+  "types": "lib/types/host/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/host/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "lib/types/**/*.d.ts",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "skills/**/*.md",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-tool"
+      ]
+    }
+  },
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && tsdown",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "probe": "node scripts/probe-app-server.mjs",
+    "schema:codex": "node scripts/gen-codex-schema.mjs",
+    "pack:check": "pnpm pack --dry-run",
+    "prepack": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.4",
+    "@deepseek-ai/schemastery": "~3.18.4",
+    "@deepseek-ai/dsh-tools": ">=0.2.0-rc.1 <0.3.0",
+    "react": ">=18.2.0 <19"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@deepseek-ai/cordis": "4.0.4",
+    "@deepseek-ai/dsh-attachment": "0.2.0-rc.1",
+    "@deepseek-ai/dsh-client-connection": "0.2.0-rc.1",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.0-rc.1",
+    "@deepseek-ai/dsh-client-ui-tool": "0.2.0-rc.1",
+    "@deepseek-ai/dsh-llm": "0.2.0-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.0-rc.1",
+    "@deepseek-ai/schemastery": "3.18.4",
+    "@types/node": "^22.20.0",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}
